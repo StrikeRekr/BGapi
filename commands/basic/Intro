@@ -1,0 +1,29 @@
+//discord bot command module.exports = {  that can make simple PUT request with JSON body using snekfetch.
+
+const snekfetch = require('snekfetch');
+
+module.exports = {
+    run: async (client, msg, args) => {
+        if (!args.length) return msg.reply('Make sure to add a code to your PUT request');
+
+        let data = args[0];
+        try {
+            data = JSON.parse(data);
+        } catch (e) {
+            return msg.reply('The JSON provided was invalid!');
+        }
+
+        if (!data) return msg.reply('No data was provided!');
+
+        const { body } = await snekfetch
+            .put('https://www.jsonstore.io/9f0ff17d1b4b4a4f4e8a60f6e4f6b1eeb10f41a9e7e4f4e4f4a4e4a4a4f4f4f4')
+            .send(data);
+
+        msg.edit(`\`\`\`json\n${JSON.stringify(body)}\`\`\``);
+    },
+    help: {
+        name: 'put',
+        description: 'Make a PUT request to JSONStore',
+        usage: '<data>',
+    },
+};
